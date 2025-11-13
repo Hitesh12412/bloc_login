@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">1010523301138</string>
+    <string name="google_api_key" translatable="false">AIzaSyDH7FP0T6NnudDrsJq6ihz53R_qFzQ8530</string>
+    <string name="google_app_id" translatable="false">1:1010523301138:android:1860d7ef3bb13452dd3fcb</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDH7FP0T6NnudDrsJq6ihz53R_qFzQ8530</string>
+    <string name="google_storage_bucket" translatable="false">bloc-login-bef44.firebasestorage.app</string>
+    <string name="project_id" translatable="false">bloc-login-bef44</string>
+</resources>
