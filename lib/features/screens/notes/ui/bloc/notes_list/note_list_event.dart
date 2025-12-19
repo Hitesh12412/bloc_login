@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-abstract class PaymentHistoryEvents extends Equatable {
+abstract class NoteListEvents extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class FetchPaymentHistoryEvent extends PaymentHistoryEvents {
+class FetchNoteListEvent extends NoteListEvents {
   final String userId;
 
-  FetchPaymentHistoryEvent({
+  FetchNoteListEvent({
     required this.userId,
   });
 

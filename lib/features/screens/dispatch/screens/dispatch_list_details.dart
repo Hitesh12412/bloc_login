@@ -41,6 +41,11 @@ class _ProductionDetailViewState extends State<ProductionDetailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
+          ),),
         title: const Text(
           'View Order',
           style: TextStyle(
@@ -72,7 +77,7 @@ class _ProductionDetailViewState extends State<ProductionDetailView> {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -89,7 +94,7 @@ class _ProductionDetailViewState extends State<ProductionDetailView> {
             onTap: () {},
             child: Container(
               margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),

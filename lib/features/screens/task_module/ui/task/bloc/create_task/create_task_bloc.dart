@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'create_task_event.dart';
@@ -19,7 +20,9 @@ class TaskCreateBloc extends Bloc<TaskCreateEvent, TaskCreateState> {
           'start_date': event.startDate,
           'end_date': event.endDate,
         };
-        print('CreateTask POST: $data');
+        if (kDebugMode) {
+          print('CreateTask POST: $data');
+        }
 
         final Uri url = Uri.parse("https://shiserp.com/demo/api/createTask");
         final response = await http.post(url, body: data);

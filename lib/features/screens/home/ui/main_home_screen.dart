@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:bloc_login/features/screens/Reminders/ui/reminders_screen.dart';
 import 'package:bloc_login/features/screens/customer_module/ui/customer_dashboard.dart';
@@ -9,7 +8,7 @@ import 'package:bloc_login/features/screens/file_manager/File_manager.dart';
 import 'package:bloc_login/features/screens/hrmanager_module/ui/hr_dsah.dart';
 import 'package:bloc_login/features/screens/inventory/dash/inventory_dash.dart';
 import 'package:bloc_login/features/screens/lead/dashboard/lead_dashboard.dart';
-import 'package:bloc_login/features/screens/notes/ui/notes_screen.dart';
+import 'package:bloc_login/features/screens/notes/ui/screen/notes_list_screen/notes_screen.dart';
 import 'package:bloc_login/features/screens/notification/screens/notification_screen.dart';
 import 'package:bloc_login/features/screens/production/dash/production_dash.dart';
 import 'package:bloc_login/features/screens/purchase/dash/purchase_dash.dart';
@@ -118,7 +117,7 @@ class MainHomeScreen extends StatelessWidget {
       const OrderDashboard(),
       const RemindersScreen(),
       const SettingsScreen(),
-      const NotesScreen(),
+      const NotesScreenList(),
       const LeadDashboard(),
       const DispatchDashboard(),
       const SupportBlocProvider(),
@@ -171,6 +170,7 @@ class MainHomeScreen extends StatelessWidget {
     ];
 
     return Scaffold(
+      backgroundColor: Colors.blue.shade50,
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
@@ -607,16 +607,15 @@ class MainHomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 16),
           Expanded(
             child: Container(
-              margin: const EdgeInsets.only(left: 10, right: 10),
+              margin: const EdgeInsets.only(left: 5, right: 5),
               child: GridView.builder(
                 itemCount: moduleNames.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  crossAxisSpacing: 14,
-                  mainAxisSpacing: 14,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
                   childAspectRatio: 1,
                 ),
                 itemBuilder: (context, index) {
@@ -628,13 +627,14 @@ class MainHomeScreen extends StatelessWidget {
                           context, moduleName, moduleScreens[index]);
                     },
                     child: AnimatedContainer(
+                      margin: const EdgeInsets.only(top: 10,right: 5,left: 5),
                       duration: const Duration(milliseconds: 200),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(18),
                         boxShadow: const [
                           BoxShadow(
-                            color: Colors.grey,
+                            color: Colors.black26,
                             blurRadius: 8,
                             offset: Offset(0, 2),
                           ),

@@ -42,6 +42,7 @@ class TaskBloc extends Bloc<TaskEvents, TaskStates> {
     final data = {
       'user_id': userID,
       'db_connection': "erp_tata_steel_demo",
+      'search_text': ''
     };
 
     final Uri url = Uri.parse("https://shiserp.com/demo/api/taskList");

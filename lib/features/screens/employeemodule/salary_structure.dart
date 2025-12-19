@@ -14,10 +14,13 @@ class _SalaryStructureState extends State<SalaryStructure> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.blue,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+        ),
         leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: () => Navigator.pop(context),
           child: Container(
             padding: const EdgeInsets.only(left: 7),
             margin: const EdgeInsets.all(9),
@@ -32,23 +35,13 @@ class _SalaryStructureState extends State<SalaryStructure> {
             ),
           ),
         ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.blue,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(16),
-            bottomRight: Radius.circular(16),
-          ),),
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Salary Structure",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-          ],
+        title: const Text(
+          "Salary Structure",
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
         ),
-        centerTitle: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -70,67 +63,73 @@ class _SalaryStructureState extends State<SalaryStructure> {
   }
 
   Widget _buildToggleTabs() {
-    return Container(
-      height: 45,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Stack(
-        children: [
-          AnimatedAlign(
-            duration: const Duration(milliseconds: 250),
-            alignment: selectedIndex == 0 ? Alignment.centerLeft : Alignment.centerRight,
-            child: Container(
-              width: MediaQuery.of(context).size.width / 2 - 32,
-              margin: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final tabWidth = constraints.maxWidth / 2;
+        return Container(
+          height: 45,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(14),
           ),
-          Row(
+          child: Stack(
             children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => setState(() => selectedIndex = 0),
-                  behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Earnings',
-                      style: TextStyle(
-                        color: selectedIndex == 0 ? Colors.white : Colors.black87,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+              AnimatedAlign(
+                duration: const Duration(milliseconds: 250),
+                alignment: selectedIndex == 0
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
+                child: Container(
+                  width: tabWidth,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
               ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => setState(() => selectedIndex = 1),
-                  behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Deductions',
-                      style: TextStyle(
-                        color: selectedIndex == 1 ? Colors.white : Colors.black87,
-                        fontWeight: FontWeight.w600,
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => setState(() => selectedIndex = 0),
+                      child: Center(
+                        child: Text(
+                          'Earnings',
+                          style: TextStyle(
+                            color: selectedIndex == 0
+                                ? Colors.white
+                                : Colors.black87,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => setState(() => selectedIndex = 1),
+                      child: Center(
+                        child: Text(
+                          'Deductions',
+                          style: TextStyle(
+                            color: selectedIndex == 1
+                                ? Colors.white
+                                : Colors.black87,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
-
 
   List<Widget> _buildEarningsCards() {
     return [
@@ -194,7 +193,7 @@ class _SalaryStructureState extends State<SalaryStructure> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withOpacity(0.4),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -215,9 +214,11 @@ class _SalaryStructureState extends State<SalaryStructure> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 16)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 16),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   value,
@@ -230,38 +231,24 @@ class _SalaryStructureState extends State<SalaryStructure> {
               ],
             ),
           ),
-          if (badge != null)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade100,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                badge,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            )
-          else
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.green.shade100,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Text(
-                'Active',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                ),
+          Container(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: badge != null
+                  ? Colors.blue.shade100
+                  : Colors.green.shade100,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              badge ?? 'Active',
+              style: TextStyle(
+                fontSize: 12,
+                color: badge != null ? Colors.blue : Colors.green,
+                fontWeight: FontWeight.bold,
               ),
             ),
+          ),
         ],
       ),
     );

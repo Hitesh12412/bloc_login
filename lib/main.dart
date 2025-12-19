@@ -2,6 +2,7 @@ import 'package:bloc_login/features/screens/loginpage/bloc/login_bloc.dart';
 import 'package:bloc_login/features/screens/registerpage/bloc/register_bloc.dart';
 import 'package:bloc_login/features/screens/splash/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,9 +11,13 @@ void main() async {
 
   try {
     await Firebase.initializeApp();
-    print("Firebase initialized successfully");
+    if (kDebugMode) {
+      print("Firebase initialized successfully");
+    }
   } catch (e) {
-    print("Firebase initialization failed: $e");
+    if (kDebugMode) {
+      print("Firebase initialization failed: $e");
+    }
   }
 
   runApp(const MyApp());
@@ -31,7 +36,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "bloclogin",
-        home: const SplashScreen(),
+        home: const AnimatedSplashScreen(),
         theme: ThemeData(
           colorSchemeSeed: Colors.blue,
         ),

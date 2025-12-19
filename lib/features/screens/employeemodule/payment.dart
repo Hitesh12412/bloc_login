@@ -10,7 +10,6 @@ class EmployeePayment extends StatefulWidget {
 }
 
 class _EmployeePaymentState extends State<EmployeePayment> {
-  
   Map<String, double> getClosingBalanceData() {
     DateTime now = DateTime.now();
     DateTime previousMonth = DateTime(now.year, now.month - 1, 1);
@@ -25,22 +24,11 @@ class _EmployeePaymentState extends State<EmployeePayment> {
   @override
   Widget build(BuildContext context) {
     final closingBalanceData = getClosingBalanceData();
+    final width = MediaQuery.of(context).size.width;
+    final horizontalPadding = width * 0.04;
 
     return Scaffold(
       appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Container(
-            padding: const EdgeInsets.only(left: 7),
-            margin: const EdgeInsets.all(9),
-            decoration: BoxDecoration(
-              color: Colors.blue.shade300,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child:
-            const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
-          ),
-        ),
         backgroundColor: Colors.blue,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -49,301 +37,311 @@ class _EmployeePaymentState extends State<EmployeePayment> {
           ),
         ),
         automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Container(
+            margin: const EdgeInsets.all(9),
+            padding: const EdgeInsets.only(left: 6),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade300,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          ),
+        ),
         title: const Text(
           "Payment Report",
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Colors.white,
+          ),
         ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Colors.red.withOpacity(0.5),
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(
-                    Icons.account_balance_wallet,
-                    color: Colors.red,
-                    size: 25,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Total Pending Salary",
-                      style: TextStyle(fontSize: 15, color: Colors.grey),
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.currency_rupee_rounded,
-                          color: Colors.red,
-                        ),
-                        Text(
-                          "67",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            ),
+          Padding(
+            padding: EdgeInsets.all(horizontalPadding),
+            child: _buildPendingSalaryCard(),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const PendingSalaryScreen(),
-                ),
-              );
-            },
-            child: Container(
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(
-                        top: 10, left: 10, right: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.2),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.error_outline,
-                          color: Colors.blue,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Current month salary calculation',
-                          style: TextStyle(color: Colors.blue, fontSize: 16),
-                        ),
-                        Spacer(),
-                        Icon(Icons.arrow_forward_ios_rounded, size: 18)
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                        top: 20, bottom: 20, left: 10, right: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Icon(
-                            Icons.money,
-                            color: Colors.green.shade700,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "${DateFormat('MMM, yyyy').format(
-                            DateTime.now(),
-                          )} Salary",
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
-                        ),
-                        const Spacer(),
-                        const Icon(
-                          Icons.currency_rupee_rounded,
-                          size: 17,
-                          color: Colors.green,
-                        ),
-                        const Text(
-                          "67",
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: _buildCurrentMonthCard(context),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 10),
+          const SizedBox(height: 12),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: const Text(
               'Previous Months Closing Balance',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-
-          
+          const SizedBox(height: 8),
           Expanded(
             child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
               itemCount: closingBalanceData.length,
               itemBuilder: (context, index) {
-                String monthYear = closingBalanceData.keys.elementAt(index);
-                double balance = closingBalanceData.values.elementAt(index);
-                bool isRecentMonth = index == 0; 
+                final monthYear = closingBalanceData.keys.elementAt(index);
+                final balance = closingBalanceData.values.elementAt(index);
+                final isRecent = index == 0;
 
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                    border: isRecentMonth
-                        ? Border.all(color: Colors.orange.withOpacity(0.5), width: 2)
-                        : null,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: isRecentMonth
-                                ? Colors.orange.withOpacity(0.2)
-                                : Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Icon(
-                            Icons.account_balance,
-                            color: isRecentMonth ? Colors.orange : Colors.grey.shade600,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                monthYear,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: isRecentMonth ? Colors.orange : Colors.black87,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Closing Balance',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.currency_rupee_rounded,
-                                  size: 18,
-                                  color: isRecentMonth ? Colors.orange : Colors.black87,
-                                ),
-                                Text(
-                                  balance.toStringAsFixed(0),
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: isRecentMonth ? Colors.orange : Colors.black87,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (isRecentMonth)
-                              Container(
-                                margin: const EdgeInsets.only(top: 4),
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: Colors.orange,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Text(
-                                  'Recent',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                return _buildClosingBalanceTile(
+                  monthYear: monthYear,
+                  balance: balance,
+                  isRecent: isRecent,
                 );
               },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPendingSalaryCard() {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.red.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.red.withOpacity(0.4)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(
+              Icons.account_balance_wallet,
+              color: Colors.red,
+              size: 26,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                "Total Pending Salary",
+                style: TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+              SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(Icons.currency_rupee_rounded, color: Colors.red),
+                  Text(
+                    "67",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCurrentMonthCard(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const PendingSalaryScreen()),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.15),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.error_outline, color: Colors.blue),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'Current month salary calculation',
+                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios_rounded, size: 18),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.25),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(Icons.money, color: Colors.green.shade700),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      "${DateFormat('MMM, yyyy').format(DateTime.now())} Salary",
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Icon(
+                    Icons.currency_rupee_rounded,
+                    size: 18,
+                    color: Colors.green,
+                  ),
+                  const Text(
+                    "67",
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildClosingBalanceTile({
+    required String monthYear,
+    required double balance,
+    required bool isRecent,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 4),
+        ],
+        border: isRecent
+            ? Border.all(color: Colors.orange.withOpacity(0.6), width: 2)
+            : null,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isRecent
+                    ? Colors.orange.withOpacity(0.2)
+                    : Colors.grey.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                Icons.account_balance,
+                color: isRecent ? Colors.orange : Colors.grey.shade600,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    monthYear,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: isRecent ? Colors.orange : Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Closing Balance',
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.currency_rupee_rounded,
+                      size: 18,
+                      color: isRecent ? Colors.orange : Colors.black87,
+                    ),
+                    Text(
+                      balance.toStringAsFixed(0),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: isRecent ? Colors.orange : Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+                if (isRecent)
+                  Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Text(
+                      'Recent',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'package:bloc_login/features/screens/hrmanager_module/ui/employee!_data/agreement_screen/bloc/create_agreement_bloc/create_agreement_bloc.dart';
-import 'package:bloc_login/features/screens/hrmanager_module/ui/employee!_data/agreement_screen/bloc/create_agreement_bloc/create_agreement_event.dart';
-import 'package:bloc_login/features/screens/hrmanager_module/ui/employee!_data/agreement_screen/bloc/create_agreement_bloc/create_agreement_state.dart';
+import 'package:bloc_login/features/screens/hrmanager_module/ui/employee!_details/agreement_screen/bloc/create_agreement_bloc/create_agreement_bloc.dart';
+import 'package:bloc_login/features/screens/hrmanager_module/ui/employee!_details/agreement_screen/bloc/create_agreement_bloc/create_agreement_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';

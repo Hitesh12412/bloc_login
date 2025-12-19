@@ -5,21 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class CreateTaskScreen extends StatefulWidget {
-  const CreateTaskScreen({super.key});
-  @override
-  State<CreateTaskScreen> createState() => _CreateTaskScreenState();
-}
+class CreateTaskScreen extends StatelessWidget {
+  final String employeeId;
+  final String userId;
 
-class _CreateTaskScreenState extends State<CreateTaskScreen> {
+  const CreateTaskScreen({
+    super.key,
+    required this.employeeId,
+    required this.userId,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        return TaskCreateBloc();
-      },
-      child: const CreateTask(
-        employeeId: '', userId: '1',
+    return BlocProvider<TaskCreateBloc>(
+      create: (context) => TaskCreateBloc(),
+      child: CreateTask(
+        employeeId: employeeId,
+        userId: userId,
       ),
     );
   }
@@ -27,10 +29,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
 class CreateTask extends StatefulWidget {
   final String employeeId;
+  final String userId;
 
   const CreateTask({
     super.key,
-    required this.employeeId, required String userId,
+    required this.employeeId,
+    required this.userId,
   });
 
   @override
@@ -146,12 +150,12 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   void _onSave(BuildContext context) {
-    final name = taskNameController.text;
-    final desc = taskDescController.text;
-    final remark = remarkController.text;
-    final priority = taskPriorityController.text;
-    final sDate = startDateController.text;
-    final eDate = endDateController.text;
+    final name = taskNameController.text.trim();
+    final desc = taskDescController.text.trim();
+    final remark = remarkController.text.trim();
+    final priority = taskPriorityController.text.trim();
+    final sDate = startDateController.text.trim();
+    final eDate = endDateController.text.trim();
 
     if (name.isEmpty ||
         desc.isEmpty ||
@@ -166,7 +170,8 @@ class _CreateTaskState extends State<CreateTask> {
       );
       return;
     }
-    BlocProvider.of<TaskCreateBloc>(context).add(
+
+    context.read<TaskCreateBloc>().add(
       TaskCreateRequested(
         taskName: name,
         description: desc,
@@ -178,7 +183,6 @@ class _CreateTaskState extends State<CreateTask> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,7 +192,7 @@ class _CreateTaskState extends State<CreateTask> {
             Navigator.pop(context);
           },
           icon: Container(
-            alignment: Alignment.center,
+            padding: const EdgeInsets.only(left: 12,right: 6,top: 8,bottom: 8),
             decoration: BoxDecoration(
               color: Colors.blue.shade300,
               borderRadius: BorderRadius.circular(10),
@@ -208,164 +212,162 @@ class _CreateTaskState extends State<CreateTask> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
-      body: BlocProvider<TaskCreateBloc>(
-        create: (_) => TaskCreateBloc(),
-        child: BlocListener<TaskCreateBloc, TaskCreateState>(
-          listener: (context, state) {
-            if (state is TaskCreateSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                ),
-              );
-              Navigator.pop(context, true);
-            }
-            else if (state is TaskCreateFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.error),
-                ),
-              );
-            }
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildInputField(
-                    label: "Task Name",
-                    controller: taskNameController,
-                    hint: "Enter task name",
-                  ),
-                  _buildInputField(
-                    label: "Description",
-                    controller: taskDescController,
-                    maxLines: 4,
-                    hint: "Enter description",
-                  ),
-                  _buildInputField(
-                    label: "Remark",
-                    controller: remarkController,
-                    maxLines: 2,
-                    hint: "Enter remark",
-                  ),
-                  DropdownButtonFormField<String>(
-                    value: taskPriorityController.text.isEmpty
-                        ? null
-                        : taskPriorityController.text,
-                    items: priorities.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    decoration: InputDecoration(
-                      labelText: "Task Priority",
-                      hintText: "Select priority",
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      filled: true,
-                      fillColor: const Color(0xB0DFD9D5),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 14),
-                    ),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        taskPriorityController.text = newValue ?? '';
-                      });
-                    },
-                    validator: (value) => value == null || value.isEmpty
-                        ? 'Please select priority'
-                        : null,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInputField(
-                    label: "Start Date",
-                    controller: startDateController,
-                    readOnly: true,
-                    onTap: () => _selectDate(true),
-                    suffixIcon: const Icon(Icons.today),
-                    labelColor: Colors.blue,
-                    hint: "Select start date",
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInputField(
-                    label: "End Date",
-                    controller: endDateController,
-                    readOnly: true,
-                    onTap: () => _selectDate(false),
-                    suffixIcon: const Icon(Icons.today),
-                    hint: "Select end date",
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.blue,
-                            side: const BorderSide(color: Colors.blue),
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Text(
-                            "Cancel",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: BlocBuilder<TaskCreateBloc, TaskCreateState>(
-                          builder: (context, state) {
-                            return ElevatedButton(
-                              onPressed: state is TaskCreateLoading
-                                  ? null
-                                  : () {
-                                _onSave(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: state is TaskCreateLoading
-                                  ? const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 18,
-                                    height: 18,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text('Creating...', style: TextStyle(color: Colors.white)),
-                                ],
-                              )
-                                  : const Text('Save',
-                                  style: TextStyle(color: Colors.white)),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+      body: BlocListener<TaskCreateBloc, TaskCreateState>(
+        listener: (context, state) {
+          if (state is TaskCreateSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.green,
+                content: Text(state.message),
               ),
+            );
+            Navigator.pop(context, true);
+          } else if (state is TaskCreateFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.red,
+                content: Text(state.error),
+              ),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildInputField(
+                  label: "Task Name",
+                  controller: taskNameController,
+                  hint: "Enter task name",
+                ),
+                _buildInputField(
+                  label: "Description",
+                  controller: taskDescController,
+                  maxLines: 4,
+                  hint: "Enter description",
+                ),
+                _buildInputField(
+                  label: "Remark",
+                  controller: remarkController,
+                  maxLines: 2,
+                  hint: "Enter remark",
+                ),
+                DropdownButtonFormField<String>(
+                  value: taskPriorityController.text.isEmpty
+                      ? null
+                      : taskPriorityController.text,
+                  items: priorities.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(
+                    labelText: "Task Priority",
+                    hintText: "Select priority",
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    filled: true,
+                    fillColor: const Color(0xB0DFD9D5),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      taskPriorityController.text = newValue ?? '';
+                    });
+                  },
+                  validator: (value) =>
+                  value == null || value.isEmpty ? 'Please select priority' : null,
+                ),
+                const SizedBox(height: 16),
+                _buildInputField(
+                  label: "Start Date",
+                  controller: startDateController,
+                  readOnly: true,
+                  onTap: () => _selectDate(true),
+                  suffixIcon: const Icon(Icons.today),
+                  labelColor: Colors.blue,
+                  hint: "Select start date",
+                ),
+                const SizedBox(height: 16),
+                _buildInputField(
+                  label: "End Date",
+                  controller: endDateController,
+                  readOnly: true,
+                  onTap: () => _selectDate(false),
+                  suffixIcon: const Icon(Icons.today),
+                  hint: "Select end date",
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.blue,
+                          side: const BorderSide(color: Colors.blue),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: BlocBuilder<TaskCreateBloc, TaskCreateState>(
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: state is TaskCreateLoading
+                                ? null
+                                : () {
+                              _onSave(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: state is TaskCreateLoading
+                                ? const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Text('Creating...', style: TextStyle(color: Colors.white)),
+                              ],
+                            )
+                                : const Text('Save', style: TextStyle(color: Colors.white)),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

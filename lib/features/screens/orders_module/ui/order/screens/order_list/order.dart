@@ -2,6 +2,7 @@ import 'package:bloc_login/features/screens/dispatch/screens/dispatch_list_detai
 import 'package:bloc_login/features/screens/orders_module/ui/order/bloc/order_list/order_list_bloc.dart';
 import 'package:bloc_login/features/screens/orders_module/ui/order/bloc/order_list/order_list_event.dart';
 import 'package:bloc_login/features/screens/orders_module/ui/order/bloc/order_list/order_list_state.dart';
+import 'package:bloc_login/features/screens/orders_module/ui/order/screens/client_list/client_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -51,7 +52,7 @@ class _OrderListScreenWidgetState extends State<OrderListScreenWidget> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<OrderBloc>(context).add(const FetchOrderEvent(userId: "1"));
+    BlocProvider.of<OrderBloc>(context).add(const FetchOrderEvent(userId: "1"),);
   }
 
   String formatDate(String dateString) {
@@ -188,7 +189,14 @@ class _OrderListScreenWidgetState extends State<OrderListScreenWidget> {
               ),
             ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SelectClientScreenView(),
+                ),
+              );
+            },
             child: Container(
               margin: const EdgeInsets.only(right: 15),
               padding: const EdgeInsets.all(8),
@@ -310,7 +318,7 @@ class _OrderListScreenWidgetState extends State<OrderListScreenWidget> {
                     color: Colors.blue,
                     strokeWidth: 2,
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                  ));
+                  ),);
                 } else if (state is LoadedOrderState) {
                   final orders = state.model.data;
                   if (orders.isNotEmpty) {
@@ -821,7 +829,7 @@ class _OrderListScreenWidgetState extends State<OrderListScreenWidget> {
                                             const Icon(Icons.currency_rupee,
                                                 color: Colors.white, size: 20),
                                             Text(
-                                              order.pendingAmount,
+                                              order.grandTotal,
                                               style: const TextStyle(
                                                   color: Colors.white, fontSize: 20),
                                             ),

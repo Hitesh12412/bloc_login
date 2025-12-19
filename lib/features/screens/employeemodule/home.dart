@@ -26,59 +26,47 @@ class _EmployeeHomeState extends State<EmployeeHome> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final horizontalPadding = MediaQuery.of(context).size.width * 0.04;
+
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
+        automaticallyImplyLeading: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(16),
             bottomRight: Radius.circular(16),
           ),
         ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.blue,
         leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(Icons.dashboard_rounded, size: 36, color: Colors.white),
+          onTap: () => Navigator.pop(context),
+          child: const Icon(Icons.dashboard_rounded, size: 34, color: Colors.white),
         ),
         centerTitle: true,
         title: const CircleAvatar(
-          radius: 25,
+          radius: 24,
           backgroundImage: NetworkImage(
-            "https://img.freepik.com/premium-vector/avatar-profile-icon-flat-style-male-user-profile-vector-illustration-isolated-background-man-profile-sign-business-concept_157943-38764.jpg?semt=ais_hybrid&w=740",
+            "https://img.freepik.com/premium-vector/avatar-profile-icon-flat-style-male-user-profile-vector-illustration-isolated-background-man-profile-sign-business-concept_157943-38764.jpg",
           ),
         ),
         actions: [
-          Container(
-              padding: const EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.notifications, size: 28, color: Colors.black)),
+          _appBarIcon(Icons.notifications),
           const SizedBox(width: 10),
-          Container(
-            margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.all(7),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.person_2_rounded,
-              size: 28,
-              color: Colors.black,
-            ),)
+          _appBarIcon(Icons.person_2_rounded),
+          const SizedBox(width: 10),
         ],
       ),
       body: SafeArea(
-        top: true,
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+            vertical: 12,
+          ),
           child: Column(
             children: [
+              
               _buildBox(
                 title: "Select Date",
                 icon: Icons.date_range,
@@ -86,7 +74,7 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                 content: GestureDetector(
                   onTap: _selectDate,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey.shade300),
                       borderRadius: BorderRadius.circular(8),
@@ -98,41 +86,65 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                         const SizedBox(width: 8),
                         Text(
                           DateFormat('dd MMM yyyy').format(selectedDate),
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                         const Spacer(),
-                        const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+                        const Icon(Icons.keyboard_arrow_down),
                       ],
                     ),
                   ),
                 ),
               ),
+
               const SizedBox(height: 16),
 
+              
               _buildBox(
                 title: "Employee Dashboard",
                 icon: Icons.people,
                 color: Colors.teal,
-                content: GridView.count(
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 1.6,
-                  padding: EdgeInsets.zero,
-                  children: [
-                    _buildMetricTile("5", "Pending Salary", Colors.orange, Icons.pending_actions),
-                    _buildMetricTile("18", "Total Employee", Colors.green, Icons.message),
-                    _buildMetricTile("15", "Present", Colors.teal, Icons.add_box_sharp),
-                    _buildMetricTile("1", "Absent", Colors.red, Icons.pending_actions),
-                    _buildMetricTile("0", "Half-Day", Colors.orange, Icons.add_box_sharp),
-                    _buildMetricTile("3", "Paid Leave", Colors.blue, Icons.message),
-                  ],
+                content: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final isTablet = constraints.maxWidth > 600;
+
+                    final data = [
+                      ("5", "Pending Salary", Colors.orange, Icons.pending_actions),
+                      ("18", "Total Employee", Colors.green, Icons.groups),
+                      ("15", "Present", Colors.teal, Icons.check_circle),
+                      ("1", "Absent", Colors.red, Icons.cancel),
+                      ("0", "Half-Day", Colors.orange, Icons.timelapse),
+                      ("3", "Paid Leave", Colors.blue, Icons.wallet),
+                    ];
+
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: data.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isTablet ? 3 : 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: isTablet ? 1.8 : 1.4,
+                      ),
+                      itemBuilder: (context, index) {
+                        return _buildMetricTile(
+                          data[index].$1,
+                          data[index].$2,
+                          data[index].$3,
+                          data[index].$4,
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
+
               const SizedBox(height: 24),
 
+              
               _buildBox(
                 title: "Attendance Overview",
                 icon: Icons.pie_chart,
@@ -140,7 +152,7 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                 content: Column(
                   children: [
                     SizedBox(
-                      height: 250,
+                      height: screenHeight * 0.32,
                       child: SfCircularChart(
                         margin: EdgeInsets.zero,
                         annotations: const [
@@ -148,10 +160,10 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                             widget: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text("Present: 85.0%", style: TextStyle(color: Colors.green, fontSize: 12),),
-                                Text("Absent: 5.6%", style: TextStyle(color: Colors.red, fontSize: 12),),
-                                Text("Half Day: 0.0%", style: TextStyle(color: Colors.orange, fontSize: 12),),
-                                Text("Paid Leave: 15.0%", style: TextStyle(color: Colors.blue, fontSize: 12),),
+                                Text("Present: 85%", style: TextStyle(color: Colors.green)),
+                                Text("Absent: 5.6%", style: TextStyle(color: Colors.red)),
+                                Text("Half Day: 0%", style: TextStyle(color: Colors.orange)),
+                                Text("Paid Leave: 15%", style: TextStyle(color: Colors.blue)),
                               ],
                             ),
                           ),
@@ -159,32 +171,141 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                         series: <RadialBarSeries<_AttendanceData, String>>[
                           RadialBarSeries<_AttendanceData, String>(
                             maximumValue: 100,
-                            gap: '5%',
-                            cornerStyle: CornerStyle.bothCurve,
+                            gap: '6%',
                             radius: '100%',
                             innerRadius: '50%',
+                            cornerStyle: CornerStyle.bothCurve,
                             dataSource: _getAttendanceData(),
                             xValueMapper: (data, _) => data.category,
                             yValueMapper: (data, _) => data.value,
                             pointColorMapper: (data, _) => data.color,
-                            dataLabelSettings: const DataLabelSettings(isVisible: false),
                           ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      "Graph is based on 23 working days.",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      "Graph is based on 23 working days",
+                      style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
-
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  
+  Widget _appBarIcon(IconData icon) {
+    return Container(
+      padding: const EdgeInsets.all(7),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Icon(icon, size: 26, color: Colors.black),
+    );
+  }
+
+  
+  Widget _buildMetricTile(
+      String value,
+      String label,
+      Color color,
+      IconData icon,
+      ) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isSmall = constraints.maxWidth < 160;
+
+        return Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [
+              BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: isSmall ? 18 : 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  CircleAvatar(
+                    radius: isSmall ? 18 : 22,
+                    backgroundColor: color.withOpacity(0.2),
+                    child: Icon(icon, color: color, size: isSmall ? 20 : 26),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: isSmall ? 14 : 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  
+  Widget _buildBox({
+    required String title,
+    required IconData icon,
+    required Color color,
+    required Widget content,
+  }) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [color, color.withOpacity(0.7)],
+              ),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            ),
+            child: Row(
+              children: [
+                Icon(icon, color: Colors.white),
+                const SizedBox(width: 8),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: content,
+          ),
+        ],
       ),
     );
   }
@@ -196,70 +317,6 @@ class _EmployeeHomeState extends State<EmployeeHome> {
       _AttendanceData("Half Day", 0, Colors.orange),
       _AttendanceData("Paid Leave", 15, Colors.blue),
     ];
-  }
-
-  Widget _buildMetricTile(String value, String label, Color color, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                const Spacer(),
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: color.withOpacity(0.2),
-                  child: Icon(icon, size: 25, color: color),
-                ),
-              ],
-            ),
-          ),
-          Text(label, style: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBox({
-    required String title,
-    required IconData icon,
-    required Color color,
-    required Widget content,
-  }) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 2,
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
-              gradient: LinearGradient(colors: [color, color.withOpacity(0.7)], begin: Alignment.topLeft, end: Alignment.bottomRight),
-            ),
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                Icon(icon, color: Colors.white),
-                const SizedBox(width: 8),
-                Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ),
-          Padding(padding: const EdgeInsets.all(16), child: content),
-        ],
-      ),
-    );
   }
 }
 

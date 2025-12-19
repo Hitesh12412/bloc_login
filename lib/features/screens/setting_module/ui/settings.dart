@@ -90,10 +90,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 Icons.error_outline,
                                 color: Colors.blue,
                               ),
-                              Text('About',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold))
+                              Text(
+                                'About',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              )
                             ],
                           ),
                         ),
@@ -117,10 +118,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 Icons.developer_mode,
                                 color: Colors.blue,
                               ),
-                              Text('Developer',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold))
+                              Text(
+                                'Developer',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              )
                             ],
                           ),
                         ),
@@ -131,7 +133,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Expanded(
                         child: Container(
                           padding: const EdgeInsets.only(
-                              bottom: 10, top: 10, left: 10, right: 10),
+                            bottom: 10,
+                            top: 10,
+                            left: 10,
+                            right: 10,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
@@ -142,10 +148,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 Icons.share,
                                 color: Colors.blue,
                               ),
-                              Text('Share',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold))
+                              Text(
+                                'Share',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -268,195 +277,75 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AssistMenuScreen(),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      )
-                    ],
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AssistMenuScreen(),
                   ),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    )
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.menu,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.menu,
-                              color: Colors.blue,
-                            )),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Assist Menu',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "Quick navigation shortcuts",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
+                        Text(
+                          'Assist Menu',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 18,
-                            ))
-                      ]),
-                )),
-            GestureDetector(
-                onTap: () {
-                  ///////////////////////////////////////
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  margin:
-                      const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        )
-                      ]),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.purple.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.color_lens_outlined,
-                              color: Colors.purple,
-                            )),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Application Theme',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "Light,Dark, and Auto theme",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
+                        Text(
+                          "Quick navigation shortcuts",
+                          style: TextStyle(color: Colors.grey),
                         ),
-                        Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 18,
-                            ))
-                      ]),
-                )),
-            const SizedBox(
-              height: 10,
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-            Container(
-                padding: const EdgeInsets.only(left: 20),
-                child: const Text(
-                  'Account & Support',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                )),
-            GestureDetector(
-                onTap: () {
-                  ///////////////////////////////////////
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        )
-                      ]),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.cyan.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.devices_sharp,
-                              color: Colors.cyan,
-                            )),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Device History',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "View your login history & device",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 18,
-                            ))
-                      ]),
-                )),
             GestureDetector(
               onTap: () {
-                _launchUrl();
+                ///////////////////////////////////////
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -472,6 +361,138 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         offset: const Offset(0, 3),
                       )
                     ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.purple.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.color_lens_outlined,
+                          color: Colors.purple,
+                        )),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Application Theme',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Light,Dark, and Auto theme",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+                padding: const EdgeInsets.only(left: 20),
+                child: const Text(
+                  'Account & Support',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                )),
+            GestureDetector(
+              onTap: () {
+                ///////////////////////////////////////
+              },
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    )
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.cyan.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.devices_sharp,
+                        color: Colors.cyan,
+                      ),
+                    ),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Device History',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "View your login history & device",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                _launchUrl();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    )
+                  ],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -533,63 +554,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             GestureDetector(
-                onTap: () {
-                  ///////////////////////////////////////
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      )
-                    ],
-                  ),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              onTap: () {
+                ///////////////////////////////////////
+              },
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    )
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.file_copy_outlined,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.file_copy_outlined,
-                              color: Colors.grey,
-                            )),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Term & Conditions',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "Review our terms of services",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
+                        Text(
+                          'Term & Conditions',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 18,
-                            ))
-                      ]),
-                )),
+                        Text(
+                          "Review our terms of services",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
             GestureDetector(
               onTap: () {
                 ///////////////////////////////////////
@@ -598,29 +623,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: const EdgeInsets.all(20),
                 margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      )
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    )
+                  ],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.policy_outlined,
-                          color: Colors.grey,
-                        )),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.policy_outlined,
+                        color: Colors.grey,
+                      ),
+                    ),
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

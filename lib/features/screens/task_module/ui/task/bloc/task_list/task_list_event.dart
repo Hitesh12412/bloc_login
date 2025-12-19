@@ -7,9 +7,11 @@ abstract class TaskEvents extends Equatable {
 
 class FetchTaskEvent extends TaskEvents {
   final String userId;
+  final String searchText;
+
 
   FetchTaskEvent({
-    required this.userId,
+    required this.userId, required this.searchText,
   });
 
   @override

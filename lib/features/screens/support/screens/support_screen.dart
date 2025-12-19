@@ -81,6 +81,7 @@ class _SupportState extends State<Support> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         automaticallyImplyLeading: false,
+        titleSpacing: 0,
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
