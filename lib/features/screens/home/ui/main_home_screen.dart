@@ -170,7 +170,6 @@ class MainHomeScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,

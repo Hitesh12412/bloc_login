@@ -47,12 +47,27 @@ class _ProductSelectSingleScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
       appBar: AppBar(
+        leading: Container(
+          padding: const EdgeInsets.only(left: 5),
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: Colors.blue.shade300,
+              borderRadius: BorderRadius.circular(8)),
+          child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back_ios,
+                  size: 20, color: Colors.white)),
+        ),
         backgroundColor: Colors.blue,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),),),
+        titleSpacing: 0,
         title: const Text(
-          'Select Product',
-          style: TextStyle(color: Colors.white),
+        'Select Product',
+          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
         ),
       ),
       body: BlocBuilder<ProductBloc, ProductState>(
@@ -103,7 +118,7 @@ class _ProductSelectSingleScreenState
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            product.name ?? '',
+                            product.name,
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,

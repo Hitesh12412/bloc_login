@@ -74,6 +74,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ),
           ),
         ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
+          ),
+        ),
         titleSpacing: 0,
         title: !_showSearchBar
             ? const Row(
@@ -148,7 +154,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddProduct(),
+                  builder: (context) => const AddProductView(),
                 ),
               );
             },

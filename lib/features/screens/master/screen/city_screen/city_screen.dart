@@ -36,12 +36,27 @@ class _CitySelectScreenState extends State<CitySelectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
       appBar: AppBar(
+        leading: Container(
+          padding: const EdgeInsets.only(left: 5),
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: Colors.blue.shade300,
+              borderRadius: BorderRadius.circular(8)),
+          child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back_ios,
+                  size: 20, color: Colors.white)),
+        ),
         backgroundColor: Colors.blue,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),),),
+        titleSpacing: 0,
         title: const Text(
           'Select City',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
         ),
       ),
       body: BlocBuilder<CityBloc, CityState>(

@@ -77,13 +77,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
   List<Map<String, dynamic>> selectedProducts = [];
 
-
   String _v(Map<String, dynamic> p, String key, [String def = '0']) {
     final val = p[key];
     if (val == null) return def;
     return val.toString();
   }
-
 
   @override
   void initState() {
@@ -94,17 +92,17 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     clientNameCtrl.text = c.customerName;
     clientPhoneCtrl.text = c.mobileNo;
     emailCtrl.text = c.email;
-    addressCtrl.text = c.address ?? '';
+    addressCtrl.text = c.address;
 
-    billingAddressCtrl.text = c.address ?? '';
-    billingCountryCtrl.text = c.billingCountryName ?? '';
-    billingStateCtrl.text = c.billingStateName ?? '';
-    billingCityCtrl.text = c.billingCityName ?? '';
-    billingPincodeCtrl.text = c.billingPincode ?? '';
+    billingAddressCtrl.text = c.address;
+    billingCountryCtrl.text = c.billingCountryName;
+    billingStateCtrl.text = c.billingStateName;
+    billingCityCtrl.text = c.billingCityName;
+    billingPincodeCtrl.text = c.billingPincode;
 
-    billingCountryId = int.tryParse(c.billingCountryId?.toString() ?? '');
-    billingStateId = int.tryParse(c.billingStateId?.toString() ?? '');
-    billingCityId = int.tryParse(c.billingCityId?.toString() ?? '');
+    billingCountryId = int.tryParse(c.billingCountryId.toString());
+    billingStateId = int.tryParse(c.billingStateId.toString());
+    billingCityId = int.tryParse(c.billingCityId.toString());
 
     _syncShippingWithBilling();
   }
@@ -140,10 +138,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           });
         }
       },
-
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: Colors.blue.shade50,
           appBar: AppBar(
             leading: Container(
               padding: const EdgeInsets.only(left: 5),
@@ -160,16 +156,18 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),),),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
             titleSpacing: 0,
             title: const Text(
               'Create Order',
-              style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
           ),
-
-          bottomNavigationBar: _bottomButton(state),
-
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -178,7 +176,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 _field('Mobile No', clientPhoneCtrl),
                 _field('Email', emailCtrl),
                 _field('Address', addressCtrl),
-
                 GestureDetector(
                   onTap: () async {
                     final BranchData? branch = await Navigator.push(
@@ -193,18 +190,16 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       });
                     }
                   },
-                  child:
-                  AbsorbPointer(child: _field('Branch', branchCtrl)),
+                  child: AbsorbPointer(child: _field('Branch', branchCtrl)),
                 ),
-
                 const SizedBox(height: 16),
                 _section('Billing Address'),
-
                 Container(
-                  padding: const EdgeInsets.only(left: 12, right: 12,top: 20,bottom: 20),
+                  padding: const EdgeInsets.only(
+                      left: 12, right: 12, top: 20, bottom: 20),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(18),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
@@ -214,8 +209,58 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   ),
                   child: Column(
                     children: [
-                      _field('Billing Address', billingAddressCtrl),
-
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 14),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.04),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Address',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            TextField(
+                              controller: billingAddressCtrl,
+                              maxLines: 5,
+                              minLines: 3,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'Enter Billing Address',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.shade400,
+                                  fontSize: 15,
+                                ),
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding: EdgeInsets.zero,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       _selectField(
                         label: 'Country',
                         ctrl: billingCountryCtrl,
@@ -238,60 +283,60 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           }
                         },
                       ),
-
                       _selectField(
                         label: 'State',
                         ctrl: billingStateCtrl,
                         onTap: billingCountryId == null
                             ? null
                             : () async {
-                          final StateData? s = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => StateSelectView(
-                                  countryId: billingCountryId!),
-                            ),
-                          );
-                          if (s != null) {
-                            setState(() {
-                              billingStateCtrl.text = s.name;
-                              billingStateId = s.id;
-                              billingCityCtrl.clear();
-                              billingCityId = null;
-                              if (shippingSame) _syncShippingWithBilling();
-                            });
-                          }
-                        },
+                                final StateData? s = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => StateSelectView(
+                                        countryId: billingCountryId!),
+                                  ),
+                                );
+                                if (s != null) {
+                                  setState(() {
+                                    billingStateCtrl.text = s.name;
+                                    billingStateId = s.id;
+                                    billingCityCtrl.clear();
+                                    billingCityId = null;
+                                    if (shippingSame) {
+                                      _syncShippingWithBilling();
+                                    }
+                                  });
+                                }
+                              },
                       ),
-
                       _selectField(
                         label: 'City',
                         ctrl: billingCityCtrl,
                         onTap: billingStateId == null
                             ? null
                             : () async {
-                          final CityData? c = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  CitySelectView(stateId: billingStateId!),
-                            ),
-                          );
-                          if (c != null) {
-                            setState(() {
-                              billingCityCtrl.text = c.name;
-                              billingCityId = c.id;
-                              if (shippingSame) _syncShippingWithBilling();
-                            });
-                          }
-                        },
+                                final CityData? c = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => CitySelectView(
+                                        stateId: billingStateId!),
+                                  ),
+                                );
+                                if (c != null) {
+                                  setState(() {
+                                    billingCityCtrl.text = c.name;
+                                    billingCityId = c.id;
+                                    if (shippingSame) {
+                                      _syncShippingWithBilling();
+                                    }
+                                  });
+                                }
+                              },
                       ),
-
-                      _field('Billing Pincode', billingPincodeCtrl),
+                      _field('Pin code', billingPincodeCtrl),
                     ],
                   ),
                 ),
-
                 Row(
                   children: [
                     Checkbox(
@@ -309,14 +354,14 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                     const Text('Shipping address same as Billing'),
                   ],
                 ),
-
                 const SizedBox(height: 16),
                 _section('Shipping Address'),
                 Container(
-                  padding: const EdgeInsets.only(left: 12, right: 12,top: 20,bottom: 20),
+                  padding: const EdgeInsets.only(
+                      left: 12, right: 12, top: 20, bottom: 20),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(18),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
@@ -326,19 +371,118 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   ),
                   child: Column(
                     children: [
-                      _field('Shipping Address', shippingAddressCtrl),
-                      _field('Shipping Country', shippingCountryCtrl),
-                      _field('Shipping State', shippingStateCtrl),
-                      _field('Shipping City', shippingCityCtrl),
-                      _field('Shipping Pincode', shippingPincodeCtrl),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 14),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.04),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Address',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            TextField(
+                              controller: shippingAddressCtrl,
+                              maxLines: 5,
+                              minLines: 3,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'Enter Billing Address',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.shade400,
+                                  fontSize: 15,
+                                ),
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding: EdgeInsets.zero,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      _field('Country', shippingCountryCtrl),
+                      _field('State', shippingStateCtrl),
+                      _field('City', shippingCityCtrl),
+                      _field('Pin code', shippingPincodeCtrl),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
-                _field('Description', descriptionCtrl),
-
+                Container(
+                  margin: const EdgeInsets.only(bottom: 14),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: Colors.grey.shade300,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Description',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      TextField(
+                        controller: descriptionCtrl,
+                        maxLines: 5,
+                        minLines: 3,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Enter Description....',
+                          hintStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 15,
+                          ),
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 if (selectedProducts.isNotEmpty) ...[
                   const SizedBox(height: 16),
                   _section('Products'),
@@ -364,20 +508,34 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       },
                       child: Row(
                         children: [
-                          const Text('Add Product',style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.w500),),
+                          const Text(
+                            'Add Product',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500),
+                          ),
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: Colors.blue,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: const Icon(Icons.add,color: Colors.white,)),
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              )),
                         ],
                       ),
                     ),
                   ],
                 ),
+                if (selectedProducts.isNotEmpty) ...[
+                  const SizedBox(height: 20),
+                  _bottomButton(state),
+                  const SizedBox(height: 20),
+                ],
               ],
             ),
           ),
@@ -442,17 +600,15 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               ],
             ),
           ),
-
           _summaryRow(Icons.sell_outlined, 'Total MRP', totalMrp, Colors.green),
           _summaryRow(
               Icons.local_offer_outlined, 'Discount', -discount, Colors.red),
-          _summaryRow(
-              Icons.receipt_long_outlined, 'Taxable Value', taxable, Colors.green),
+          _summaryRow(Icons.receipt_long_outlined, 'Taxable Value', taxable,
+              Colors.green),
           _summaryRow(
               Icons.account_balance_outlined, 'CGST', cgst, Colors.orange),
           _summaryRow(
               Icons.account_balance_outlined, 'SGST', sgst, Colors.orange),
-
           Container(
             margin: const EdgeInsets.all(14),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
@@ -467,13 +623,12 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 const Expanded(
                   child: Text(
                     'Product Total',
-                    style:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.green,
                     borderRadius: BorderRadius.circular(14),
@@ -481,8 +636,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   child: Text(
                     '₹ ${total.toStringAsFixed(2)}',
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -493,8 +647,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     );
   }
 
-  Widget _summaryRow(
-      IconData icon, String label, double value, Color color) {
+  Widget _summaryRow(IconData icon, String label, double value, Color color) {
     return Column(
       children: [
         Padding(
@@ -503,19 +656,18 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             children: [
               Icon(icon, color: Colors.grey.shade600),
               const SizedBox(width: 12),
-              Expanded(child: Text(label)),
+              Expanded(child: Text(label),),
               Container(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: color.withOpacity(0.4)),
+                  border: Border.all(color: color.withOpacity(0.4),),
                 ),
                 child: Text(
                   '${value >= 0 ? '+' : '-'} ₹ ${value.abs().toStringAsFixed(2)}',
-                  style:
-                  TextStyle(color: color, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: color, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -526,49 +678,65 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     );
   }
 
-
   Widget _bottomButton(OrderCreateState state) {
     final loading = state is OrderCreateLoading;
-    return Container(
-      padding: const EdgeInsets.all(12),
-      child: ElevatedButton(
-        onPressed: loading ? null : _submit,
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            padding: const EdgeInsets.symmetric(vertical: 14)),
+    return GestureDetector(
+      onTap: loading ? null : _submit,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.circular(18),
+        ),
+        padding: const EdgeInsets.all(15),
         child: loading
-            ? const CircularProgressIndicator(color: Colors.white)
-            : const Text('Create Order',
-            style: TextStyle(color: Colors.white)),
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.save,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Save',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
       ),
     );
   }
 
   void _submit() {
     context.read<OrderCreateBloc>().add(
-      OrderCreateRequested(
-        userId: '1',
-        customerId: widget.selectedClient.id.toString(),
-        branchId: selectedBranchId?.toString() ?? '',
-        customerName: clientNameCtrl.text,
-        email: emailCtrl.text,
-        mobileNo: clientPhoneCtrl.text,
-        address: addressCtrl.text,
-        billingAddress: billingAddressCtrl.text,
-        billingCountryId: billingCountryId?.toString() ?? '',
-        billingStateId: billingStateId?.toString() ?? '',
-        billingCityId: billingCityId?.toString() ?? '',
-        billingPincode: billingPincodeCtrl.text,
-        shippingAddress: shippingAddressCtrl.text,
-        shippingCountryId: shippingCountryId?.toString() ?? '',
-        shippingStateId: shippingStateId?.toString() ?? '',
-        shippingCityId: shippingCityId?.toString() ?? '',
-        shippingPincode: shippingPincodeCtrl.text,
-        description: descriptionCtrl.text,
-        orderProductData: jsonEncode(selectedProducts),
-        leadId: '',
-      ),
-    );
+          OrderCreateRequested(
+            userId: '1',
+            customerId: widget.selectedClient.id.toString(),
+            branchId: selectedBranchId?.toString() ?? '',
+            customerName: clientNameCtrl.text,
+            email: emailCtrl.text,
+            mobileNo: clientPhoneCtrl.text,
+            address: addressCtrl.text,
+            billingAddress: billingAddressCtrl.text,
+            billingCountryId: billingCountryId?.toString() ?? '',
+            billingStateId: billingStateId?.toString() ?? '',
+            billingCityId: billingCityId?.toString() ?? '',
+            billingPincode: billingPincodeCtrl.text,
+            shippingAddress: shippingAddressCtrl.text,
+            shippingCountryId: shippingCountryId?.toString() ?? '',
+            shippingStateId: shippingStateId?.toString() ?? '',
+            shippingCityId: shippingCityId?.toString() ?? '',
+            shippingPincode: shippingPincodeCtrl.text,
+            description: descriptionCtrl.text,
+            orderProductData: jsonEncode(selectedProducts),
+            leadId: '',
+          ),
+        );
   }
 
   void _showSuccessSnackBar(String message) {
@@ -602,7 +770,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     });
   }
 
-
   Widget _section(String title) {
     return Container(
       width: double.infinity,
@@ -613,8 +780,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       ),
       child: Text(
         '$title :-',
-        style:
-        const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
       ),
     );
   }

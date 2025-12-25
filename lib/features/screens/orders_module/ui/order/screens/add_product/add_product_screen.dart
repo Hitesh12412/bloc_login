@@ -26,8 +26,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   double get qty => _d(qtyCtrl.text);
   double get price => _d(priceCtrl.text);
-  double get cgstRate => _d(selectedProduct?.tax1Rate ?? '0');
-  double get sgstRate => _d(selectedProduct?.tax2Rate ?? '0');
+  double get cgstRate => _d(selectedProduct?.tax1Rate ?? '');
+  double get sgstRate => _d(selectedProduct?.tax2Rate ?? '');
 
   double get grossAmount => qty * price;
   double get discountAmount => enableDiscount ? _d(discountAmountCtrl.text) : 0;
@@ -59,11 +59,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
     setState(() {});
   }
 
-  // 🔹 CARD (same style everywhere)
   Widget _card(String label, Widget child) {
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
@@ -84,8 +83,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 color: Colors.blue,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
-              )),
-          const SizedBox(height: 6),
+              ),),
           child,
         ],
       ),
@@ -97,7 +95,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     final hasProduct = selectedProduct != null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FBFD),
       appBar: AppBar(
         leading: Container(
           padding: const EdgeInsets.only(left: 5),
@@ -128,74 +125,231 @@ class _AddProductScreenState extends State<AddProductScreen> {
               padding: const EdgeInsets.fromLTRB(14, 16, 14, 90),
               child: Column(
                 children: [
-                  _card(
-                    'Select Product',
-                    InkWell(
-                      onTap: () async {
-                        final result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const ProductSelectSingleScreenView(),
+                  GestureDetector(
+                    onTap: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ProductSelectSingleScreenView(),
+                        ),
+                      );
+                      if (result is ProductListModel) {
+                        setState(() {
+                          selectedProduct = result;
+                          productCtrl.text = result.name;
+                          priceCtrl.text = result.productPrice;
+                        });
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 14),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.04),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
                           ),
-                        );
-                        if (result is ProductListModel) {
-                          setState(() {
-                            selectedProduct = result;
-                            productCtrl.text = result.name;
-                            priceCtrl.text = result.productPrice;
-                          });
-                        }
-                      },
+                        ],
+                      ),
                       child: Row(
                         children: [
-                          Expanded(
-                            child: Text(
-                              productCtrl.text.isEmpty
-                                  ? 'Select Product'
-                                  : productCtrl.text,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: productCtrl.text.isEmpty
-                                    ? Colors.grey
-                                    : Colors.black,
-                                fontWeight: FontWeight.w500,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Select Product',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
+                              const SizedBox(height: 6),
+                              Text(
+                                productCtrl.text.isEmpty
+                                    ? 'Select Product'
+                                    : productCtrl.text,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: productCtrl.text.isEmpty
+                                      ? Colors.grey
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                          const Icon(Icons.chevron_right),
+                          const Spacer(),
+                          const Icon(Icons.arrow_forward_ios,size: 18,color: Colors.grey,),
                         ],
                       ),
                     ),
                   ),
 
-                  _card(
-                    'Quantity',
-                    TextField(
-                      controller: qtyCtrl,
-                      keyboardType: TextInputType.number,
-                      onChanged: (v) => _syncQty(v, actualQtyCtrl),
-                      decoration: const InputDecoration(border: InputBorder.none),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 14),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: Colors.grey.shade300,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Quantity',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        TextField(
+                          controller: qtyCtrl,
+                          onChanged: (v) => _syncQty(v, actualQtyCtrl),
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Write Actual Quantity...',
+                            hintStyle: TextStyle(
+                              color: Colors.grey.shade400,
+                              fontSize: 15,
+                            ),
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
-                  _card(
-                    'Actual Quantity',
-                    TextField(
-                      controller: actualQtyCtrl,
-                      keyboardType: TextInputType.number,
-                      onChanged: (v) => _syncQty(v, qtyCtrl),
-                      decoration: const InputDecoration(border: InputBorder.none),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 14),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: Colors.grey.shade300,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Actual Quantity',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        TextField(
+                          controller: actualQtyCtrl,
+                          keyboardType: TextInputType.number,
+                          onChanged: (v) => _syncQty(v, qtyCtrl),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Write Quantity...',
+                            hintStyle: TextStyle(
+                              color: Colors.grey.shade400,
+                              fontSize: 15,
+                            ),
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
                   if (hasProduct) ...[
-                    _card(
-                      'Price',
-                      TextField(
-                        controller: priceCtrl,
-                        keyboardType: TextInputType.number,
-                        onChanged: (_) => setState(() {}),
-                        decoration: const InputDecoration(border: InputBorder.none),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 14),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.04),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Price',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          TextField(
+                            controller: priceCtrl,
+                            keyboardType: TextInputType.number,
+                            onChanged: (_) => setState(() {}),
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Write Quantity...',
+                              hintStyle: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 15,
+                              ),
+                              border: InputBorder.none,
+                              isDense: true,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
 
@@ -258,57 +412,58 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       orderTotal: orderTotal,
                     ),
                   ],
-                ],
-              ),
-            ),
-          ),
-
-          Container(
-            padding: const EdgeInsets.all(14),
-            color: Colors.white,
-            child: SafeArea(
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: hasProduct ? Colors.blue : Colors.grey,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                  const SizedBox(height: 15,),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: hasProduct ? Colors.blue : Colors.grey,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      onPressed: hasProduct
+                          ? () {
+                        Navigator.pop(context, {
+                          'product_id': selectedProduct!.id.toString(),
+                          'product_actual_price': price.toStringAsFixed(2),
+                          'qty': qty.toInt().toString(),
+                          'actual_qty': actualQtyCtrl.text,
+                          'discount_type': enableDiscount
+                              ? (discountPercentCtrl.text != '0' ? '1' : '2')
+                              : '0',
+                          'discount_per':
+                          enableDiscount ? discountPercentCtrl.text : '0',
+                          'discount_rs':
+                          enableDiscount ? discountAmountCtrl.text : '0',
+                          'total_discount':
+                          discountAmount.toStringAsFixed(2),
+                          'total_mrp': grossAmount.toStringAsFixed(2),
+                          'new_total_mrp': taxableValue.toStringAsFixed(2),
+                          'cgst_value': cgstAmount.toStringAsFixed(2),
+                          'sgst_value': sgstAmount.toStringAsFixed(2),
+                          'igst_value': '0.00',
+                          'order_total': orderTotal.toStringAsFixed(2),
+                          'lead_product_id': '',
+                        });
+                      }
+                          : null,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.save, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            'Save',
+                            style:
+                            TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  onPressed: hasProduct
-                      ? () {
-                    Navigator.pop(context, {
-                      'product_id': selectedProduct!.id.toString(),
-                      'product_actual_price': price.toStringAsFixed(2),
-                      'qty': qty.toInt().toString(),
-                      'actual_qty': actualQtyCtrl.text,
-                      'discount_type': enableDiscount
-                          ? (discountPercentCtrl.text != '0' ? '1' : '2')
-                          : '0',
-                      'discount_per':
-                      enableDiscount ? discountPercentCtrl.text : '0',
-                      'discount_rs':
-                      enableDiscount ? discountAmountCtrl.text : '0',
-                      'total_discount':
-                      discountAmount.toStringAsFixed(2),
-                      'total_mrp': grossAmount.toStringAsFixed(2),
-                      'new_total_mrp': taxableValue.toStringAsFixed(2),
-                      'cgst_value': cgstAmount.toStringAsFixed(2),
-                      'sgst_value': sgstAmount.toStringAsFixed(2),
-                      'igst_value': '0.00',
-                      'order_total': orderTotal.toStringAsFixed(2),
-                      'lead_product_id': '',
-                    });
-                  }
-                      : null,
-                  child: const Text(
-                    'Save',
-                    style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                ],
               ),
             ),
           ),
@@ -333,7 +488,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -341,6 +496,28 @@ class _AddProductScreenState extends State<AddProductScreen> {
       ),
       child: Column(
         children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.green.shade100,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+            ),),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.credit_card,color: Colors.white,),),
+                const SizedBox(width: 12),
+                const Text("Payment Summary",)
+              ],
+            ),
+          ),
           _summaryRow(Icons.sell_outlined, 'Total MRP', totalMrp, Colors.green),
           _summaryRow(Icons.local_offer_outlined, 'Total Discount', -discount, Colors.red),
           _summaryRow(Icons.receipt_long_outlined, 'Total Taxable Value', taxableValue, Colors.green),
@@ -350,7 +527,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             margin: const EdgeInsets.all(14),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             decoration: BoxDecoration(
-              color: const Color(0xFFEFF8F2),
+              color: Colors.green.shade100,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(

@@ -32,7 +32,6 @@ class _SelectClientScreenState extends State<SelectClientScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
       appBar: AppBar(
         leading: Container(
           padding: const EdgeInsets.only(left: 5),
@@ -133,12 +132,12 @@ class _SelectClientScreenState extends State<SelectClientScreen> {
                                         color: Colors.blue.shade100,
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      child: Icon(Icons.mail_outline,color: Colors.blue,),),
+                                      child: const Icon(Icons.mail_outline,color: Colors.blue,),),
                                   const SizedBox(width: 4),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text('Email',style: TextStyle(fontSize: 12),),
+                                      const Text('Email',style: TextStyle(fontSize: 12),),
                                       Text(
                                         client.email,
                                         style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w500),
@@ -156,12 +155,12 @@ class _SelectClientScreenState extends State<SelectClientScreen> {
                                         color: Colors.blue.shade100,
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      child: Icon(Icons.phone,color: Colors.blue,)),
+                                      child: const Icon(Icons.phone,color: Colors.blue,)),
                                   const SizedBox(width: 4),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text('Mobile',style: TextStyle(fontSize: 12),),
+                                      const Text('Mobile',style: TextStyle(fontSize: 12),),
                                       Text(
                                         client.mobileNo,
                                         style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: Colors.blue
