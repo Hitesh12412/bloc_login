@@ -676,6 +676,7 @@ class ProductDetailView extends StatelessWidget {
                         ],
                       ),
                     ),
+                    if (Product.productItemList.isNotEmpty)
                     Container(
                       padding: const EdgeInsets.all(8),
                       child: Row(
@@ -697,176 +698,104 @@ class ProductDetailView extends StatelessWidget {
                               color: Colors.blue.withOpacity(0.5),
                               shape: BoxShape.circle,
                             ),
-                            child: const Text('1'),
+                            child: Text(Product.productItemList.length.toString()),
                           ),
                         ],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.6),
-                            spreadRadius: 2,
-                            blurRadius: 2,
-                            offset: const Offset(0, 3),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: Product.productItemList.length,
+                      itemBuilder: (context, index) {
+                        final item =
+                        Product.productItemList[index] as Map<String, dynamic>;
+
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.4),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Icon(
-                                  Icons.inventory_2_outlined,
-                                  color: Colors.green,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  Text(
-                                    'Product ${Product.productTypeId}',
-                                    style: const TextStyle(
+                                  Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Icon(
+                                      Icons.inventory_2_outlined,
                                       color: Colors.green,
+                                      size: 25,
                                     ),
                                   ),
-                                  Text(
-                                    Product.jobNumber,
-                                    style: const TextStyle(
-                                      color: Colors.grey,
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item['product_name'] ?? 'Product',
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          'Job: ${item['job_number'] ?? '-'}',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey.shade600,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
+
+                              const SizedBox(height: 15),
+
+                              _infoRow(
+                                icon: Icons.category,
+                                label: 'Category',
+                                value: item['category_name'] ?? '-',
+                              ),
+                              _infoRow(
+                                icon: Icons.layers_outlined,
+                                label: 'Sub Category',
+                                value: item['sub_category_name'] ?? '-',
+                              ),
+                              _infoRow(
+                                icon: Icons.branding_watermark_outlined,
+                                label: 'Brand',
+                                value: item['brand_name'] ?? '-',
+                              ),
+                              _infoRow(
+                                icon: Icons.branding_watermark_outlined,
+                                label: 'Quantity',
+                                value: item['qty'] ?? '-',
+                              ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.folder_open,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Text(
-                                'Category:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                Product.categoryName,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.folder_special,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Text(
-                                'Sub-Category:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                Product.subCategoryName,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.branding_watermark_outlined,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Text(
-                                'Brand:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                Product.brandName,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.inventory_rounded,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Text(
-                                'Quantity:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                Product.qty.toString(),
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -874,6 +803,40 @@ class ProductDetailView extends StatelessWidget {
           }
           return Container();
         },
+      ),
+    );
+  }
+  Widget _infoRow({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: Colors.grey.shade600),
+          const SizedBox(width: 6),
+          SizedBox(
+            width: 90,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

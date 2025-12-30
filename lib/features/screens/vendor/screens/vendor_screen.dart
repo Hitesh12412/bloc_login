@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:bloc_login/features/screens/vendor/bloc/vendors_list_bloc/vendors_list_bloc.dart';
 import 'package:bloc_login/features/screens/vendor/bloc/vendors_list_bloc/vendors_list_event.dart';
 import 'package:bloc_login/features/screens/vendor/bloc/vendors_list_bloc/vendors_list_state.dart';
+import 'package:bloc_login/features/screens/vendor/screens/create_vendor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -152,15 +153,20 @@ class _VendorScreenViewState extends State<VendorScreenView> {
                   ],
                 ),
                 const Spacer(),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const CreateVendorView()));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
                   ),
                 )
               ],
@@ -366,6 +372,67 @@ class _VendorScreenViewState extends State<VendorScreenView> {
                                               fontSize: 18),
                                         ),
                                         const SizedBox(height: 10),
+                                        if (Vendors.vendorCompanyName.isNotEmpty)
+                                          Container(
+                                            margin: const EdgeInsets.all(7),
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                              BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 10,
+                                                  offset: const Offset(0, 2),
+                                                )
+                                              ],
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  padding:
+                                                  const EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue.shade100,
+                                                    borderRadius:
+                                                    BorderRadius.circular(12),
+                                                  ),
+                                                  child: const Icon(
+                                                    CupertinoIcons.building_2_fill,
+                                                    color: Colors.blue,
+                                                    size: 25,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                      'Company Name',
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                          FontWeight.bold,
+                                                          color: Colors.grey),
+                                                    ),
+                                                    Text(
+                                                      Vendors.vendorCompanyName,
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                          FontWeight.bold,
+                                                          color: Colors
+                                                              .grey.shade700),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         Container(
                                           margin: const EdgeInsets.all(7),
                                           padding: const EdgeInsets.all(12),
@@ -499,7 +566,7 @@ class _VendorScreenViewState extends State<VendorScreenView> {
                                                               TextDecorationStyle
                                                                   .solid),
                                                     ),
-                                                  )
+                                                  ),
                                                 ],
                                               ),
                                               const Spacer(),
@@ -511,6 +578,92 @@ class _VendorScreenViewState extends State<VendorScreenView> {
                                             ],
                                           ),
                                         ),
+                                        if (Vendors.whatsappNo.isNotEmpty)
+                                          Container(
+                                            margin: const EdgeInsets.all(7),
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                              BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 10,
+                                                  offset: const Offset(0, 2),
+                                                )
+                                              ],
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  padding:
+                                                  const EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue.shade100,
+                                                    borderRadius:
+                                                    BorderRadius.circular(12),
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.message_outlined,
+                                                    color: Colors.blue,
+                                                    size: 25,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                      'WhatsApp Number',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        const CircularProgressIndicator(
+                                                          color: Colors.blue,
+                                                        );
+                                                        _launchDialer(
+                                                            Vendors.mobileNumber);
+                                                      },
+                                                      child: Text(
+                                                        Vendors.whatsappNo,
+                                                        style: const TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                            FontWeight.bold,
+                                                            color: Colors.blue,
+                                                            decoration:
+                                                            TextDecoration
+                                                                .underline,
+                                                            decorationColor:
+                                                            Colors.blue,
+                                                            decorationThickness:
+                                                            1.5,
+                                                            decorationStyle:
+                                                            TextDecorationStyle
+                                                                .solid),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const Spacer(),
+                                                const Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  color: Colors.blue,
+                                                  size: 20,
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         const SizedBox(height: 10),
                                         const Text(
                                           'Business Information',
@@ -520,6 +673,71 @@ class _VendorScreenViewState extends State<VendorScreenView> {
                                               fontSize: 18),
                                         ),
                                         const SizedBox(height: 10),
+                                        if (Vendors.branchName.isNotEmpty)
+                                          Container(
+                                            margin: const EdgeInsets.all(7),
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                              BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 10,
+                                                  offset: const Offset(0, 2),
+                                                )
+                                              ],
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  padding:
+                                                  const EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue.shade100,
+                                                    borderRadius:
+                                                    BorderRadius.circular(12),
+                                                  ),
+                                                  child: const Icon(
+                                                    CupertinoIcons.arrow_branch,
+                                                    color: Colors.blue,
+                                                    size: 25,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      const Text(
+                                                        'Branch',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                          FontWeight.bold,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        Vendors.branchName,
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                            FontWeight.bold,
+                                                            color: Colors
+                                                                .grey.shade700),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        if (Vendors.products.isNotEmpty)
                                         Container(
                                           margin: const EdgeInsets.all(7),
                                           padding: const EdgeInsets.all(12),
@@ -554,33 +772,35 @@ class _VendorScreenViewState extends State<VendorScreenView> {
                                                 ),
                                               ),
                                               const SizedBox(width: 10),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text(
-                                                    'Product Name',
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    Vendors.vendorName,
-                                                    style: TextStyle(
-                                                        fontSize: 15,
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                      'Product Name',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        color: Colors
-                                                            .grey.shade700),
-                                                  )
-                                                ],
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      Vendors.products.map((e) => e.name).join(', '),
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.grey.shade700,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               )
                                             ],
                                           ),
                                         ),
+                                        if (Vendors.address.isNotEmpty)
                                         Container(
                                           margin: const EdgeInsets.all(7),
                                           padding: const EdgeInsets.all(12),

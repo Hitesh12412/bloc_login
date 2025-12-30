@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc_login/features/screens/product_module/bloc/add_product/add_product_bloc.dart';
 import 'package:bloc_login/features/screens/product_module/bloc/add_product/add_product_event.dart';
 import 'package:bloc_login/features/screens/product_module/bloc/add_product/add_product_state.dart';
@@ -11,6 +13,7 @@ import 'package:bloc_login/features/screens/product_module/model/brand_model_cla
 import 'package:bloc_login/features/screens/product_module/model/category_model_class.dart';
 import 'package:bloc_login/features/screens/product_module/model/sub_category_class.dart';
 import 'package:bloc_login/features/screens/product_module/model/unit_and_product_type_model.dart';
+import 'package:bloc_login/features/screens/product_module/ui/add_sub_product.dart';
 import 'package:bloc_login/features/screens/product_module/ui/brand_list_screen.dart';
 import 'package:bloc_login/features/screens/product_module/ui/category_screen.dart';
 import 'package:bloc_login/features/screens/product_module/ui/sub_category_screen.dart';
@@ -65,6 +68,14 @@ class _AddProductState extends State<AddProduct> {
   String? cgstRate;
   String? sgstRate;
   String? igstRate;
+
+  List<Map<String, dynamic>> selectedProducts = [];
+
+  String _v(Map<String, dynamic> p, String key, [String def = '0']) {
+    final val = p[key];
+    if (val == null) return def;
+    return val.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -270,34 +281,56 @@ class _AddProductState extends State<AddProduct> {
                   );
                 },
               ),
-              Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade100,
-                          shape: BoxShape.circle,
-                ),
-                        child: Icon(Icons.add_box_outlined,color: Colors.blue.shade700,)),
-                    const SizedBox(width: 10,),
-                    Text("Add New Product",style: TextStyle(color: Colors.blue.shade700),)
-                  ],
+              GestureDetector(
+                  onTap: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AddProductScreen(),
+                      ),
+                    );
+
+                    if (result != null && result is Map<String, dynamic>) {
+                      setState(() {
+                        selectedProducts.add(result);
+                      });
+                    }
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            shape: BoxShape.circle,
+                  ),
+                          child: Icon(Icons.add_box_outlined,color: Colors.blue.shade700,)),
+                      const SizedBox(width: 10,),
+                      Text("Add New Product",style: TextStyle(color: Colors.blue.shade700),)
+                    ],
+                  ),
                 ),
               ),
+
+              if (selectedProducts.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                _section('Products'),
+                ...selectedProducts.map(_productTile),
+              ],
 
               const SizedBox(height: 20),
               BlocConsumer<ProductCreateBloc, ProductCreateState>(
@@ -338,6 +371,18 @@ class _AddProductState extends State<AddProduct> {
                       onPressed: state is ProductCreateLoading
                           ? null
                           : () {
+                        final productDataJson = jsonEncode(
+                          selectedProducts.map((p) {
+                            return {
+                              "product_id": p['product_id'],
+                              "qty": p['qty'],
+                              "category_id": p['category_id'],
+                              "sub_category_id": p['sub_category_id'],
+                              "brand_id": p['brand_id'],
+                            };
+                          }).toList(),
+                        );
+
                         context.read<ProductCreateBloc>().add(
                           ProductCreateRequested(
                             userId: '1',
@@ -356,7 +401,7 @@ class _AddProductState extends State<AddProduct> {
                             tax2Rate: sgstRate ?? '0',
                             tax3: 'IGST',
                             tax3Rate: igstRate ?? '0',
-                            productData: descriptionCtrl.text,
+                            productData: productDataJson,
                           ),
                         );
                       },
@@ -800,5 +845,141 @@ class _AddProductState extends State<AddProduct> {
       ),
     );
   }
+
+  Widget _productTile(Map<String, dynamic> p) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.inventory_2_outlined,
+                          color: Colors.green, size: 20),
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _v(p, 'product_name'),
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold,color: Colors.green),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(left: 8,right: 8,top: 3,bottom: 3),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade50,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Qty: ${_v(p, 'qty')}',
+                            style: TextStyle(color: Colors.blue.shade700,fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(Icons.more_vert,color: Colors.blue.shade700,size: 20,),)
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300)
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.category_outlined,color: Colors.grey,size: 20,),
+                          const SizedBox(width: 8),
+                          Text("Category :  ${_v(p, 'category_name')}")
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(Icons.subdirectory_arrow_right,color: Colors.grey,size: 20,),
+                          const SizedBox(width: 8),
+                          Text("Sub-Category :  ${_v(p, 'sub_category_name')}")
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(Icons.branding_watermark_outlined,color: Colors.grey,size: 20,),
+                          const SizedBox(width: 8),
+                          Text("Brand :  ${_v(p, 'brand_name')}")
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _section(String title) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        '$title :-',
+        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
 
 }
