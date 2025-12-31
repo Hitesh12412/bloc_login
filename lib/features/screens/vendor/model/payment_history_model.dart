@@ -45,9 +45,9 @@ class VendorPayment {
       vendorId: json['vendor_id'] ?? 0,
       vendorName: json['vendor_name'] ?? '',
       mobileNumber: json['mobile_number'] ?? '',
-      receivedAmount: json['receivedAmount'].toString() ?? '0',
-      pendingAmount:json['pendingAmount'].toString() ?? '0',
-      totalAmount:json['totalAmount'].toString() ?? '0',
+      receivedAmount: json['receivedAmount'] ?? '0',
+      pendingAmount:json['pendingAmount'] ?? '0',
+      totalAmount:json['totalAmount'] ?? '0',
     );
   }
 }
