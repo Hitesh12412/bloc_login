@@ -1,4 +1,4 @@
-import 'package:bloc_login/features/screens/vendor/screens/payment_history.dart';
+import 'package:bloc_login/features/screens/vendor/screens/payment_history_lis.dart';
 import 'package:bloc_login/features/screens/vendor/screens/vendor_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +16,7 @@ class _VendorDashboardState extends State<VendorDashboard> {
 
   final List<Widget> _pages = [
     const VendorScreen(),
-    const VendorPaymentHistory(),
+    const VendorPaymentHistoryPage(),
   ];
 
   final List<IconData> _iconData = const [
