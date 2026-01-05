@@ -1,4 +1,3 @@
-
 import 'package:bloc_login/features/screens/vendor/model/payment_history_model.dart';
 
 abstract class PaymentHistoryState {}

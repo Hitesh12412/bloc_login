@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bloc_login/features/screens/vendor/model/payment_history_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'payment_history_event.dart';
 import 'payment_history_state.dart';
@@ -25,25 +26,26 @@ class PaymentHistoryBloc
           'user_id': '1',
           'page_number': '1',
           'page_size': '30',
+          'vendor_level_id': '0',
           'search_text': '',
+          'product_id': '',
         },
       );
 
-      if (response.statusCode == 200) {
-        final model =
-        VendorPaymentResponse.fromJson(jsonDecode(response.body));
+      final decoded = jsonDecode(response.body);
 
-        if (model.status == 200 && model.data.isNotEmpty) {
-          emit(PaymentHistoryLoaded(model.data));
-        } else {
-          emit(PaymentHistoryError(model.message));
-        }
+      if (response.statusCode == 200) {
+        final model = VendorPaymentResponse.fromJson(decoded);
+        emit(PaymentHistoryLoaded(model.data));
       } else {
         emit(PaymentHistoryError(
-            'Server error ${response.statusCode}'));
+          decoded['message']?.toString() ?? 'Server error',
+        ));
       }
-    } catch (_) {
-      emit(PaymentHistoryError('Something went wrong'));
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrint(s.toString());
+      emit(PaymentHistoryError(e.toString()));
     }
   }
 }

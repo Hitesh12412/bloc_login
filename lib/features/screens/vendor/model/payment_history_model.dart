@@ -11,11 +11,13 @@ class VendorPaymentResponse {
 
   factory VendorPaymentResponse.fromJson(Map<String, dynamic> json) {
     return VendorPaymentResponse(
-      status: json['status'] ?? 0,
-      data: (json['data'] as List? ?? [])
+      status: json['status'] is int ? json['status'] : 0,
+      data: json['data'] is List
+          ? (json['data'] as List)
           .map((e) => VendorPayment.fromJson(e))
-          .toList(),
-      message: json['message'] ?? '',
+          .toList()
+          : [],
+      message: json['message']?.toString() ?? '',
     );
   }
 }
@@ -43,11 +45,11 @@ class VendorPayment {
     return VendorPayment(
       id: json['id'] ?? 0,
       vendorId: json['vendor_id'] ?? 0,
-      vendorName: json['vendor_name'] ?? '',
-      mobileNumber: json['mobile_number'] ?? '',
-      receivedAmount: json['receivedAmount'] ?? '0',
-      pendingAmount:json['pendingAmount'] ?? '0',
-      totalAmount:json['totalAmount'] ?? '0',
+      vendorName: json['vendor_name']?.toString() ?? '',
+      mobileNumber: json['mobile_number']?.toString() ?? '',
+      receivedAmount: json['receivedAmount']?.toString() ?? '0',
+      pendingAmount: json['pendingAmount']?.toString() ?? '0',
+      totalAmount: json['totalAmount']?.toString() ?? '0',
     );
   }
 }

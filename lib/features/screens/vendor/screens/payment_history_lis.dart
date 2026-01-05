@@ -1,6 +1,7 @@
 import 'package:bloc_login/features/screens/vendor/bloc/payment_history_bloc/payment_history_bloc.dart';
 import 'package:bloc_login/features/screens/vendor/bloc/payment_history_bloc/payment_history_event.dart';
 import 'package:bloc_login/features/screens/vendor/bloc/payment_history_bloc/payment_history_state.dart';
+import 'package:bloc_login/features/screens/vendor/screens/add_vendor_payment_screen.dart';
 import 'package:bloc_login/features/screens/vendor/screens/vendor_payment_history_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,12 +61,16 @@ class _VendorPaymentHistoryScreenState
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
         title: Row(
           children: [
             Container(
@@ -109,7 +114,7 @@ class _VendorPaymentHistoryScreenState
             },
             child: Container(
               margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -122,11 +127,11 @@ class _VendorPaymentHistoryScreenState
           ),
           GestureDetector(
             onTap: () {
-              // Add search functionality
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddVendorPaymentPage(),),);
             },
             child: Container(
                 margin: const EdgeInsets.only(right: 10),
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
@@ -146,9 +151,7 @@ class _VendorPaymentHistoryScreenState
 
           if (state is PaymentHistoryError) {
             return Center(child: Text(state.message));
-          }
-
-          else if (state is PaymentHistoryLoaded) {
+          } else if (state is PaymentHistoryLoaded) {
             final vendors = state.vendors;
             if (vendors.isEmpty) {
               return _noDataWidget();
@@ -222,6 +225,7 @@ class _VendorPaymentHistoryScreenState
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       Expanded(
@@ -342,231 +346,240 @@ class _VendorPaymentHistoryScreenState
                       )
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  ...vendors.map((vendor) => GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                          const VendorPaymentHistoryDetails(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade100,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                topRight: Radius.circular(16),
+                  const SizedBox(height: 10),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: vendors.length,
+                      itemBuilder: (context, index) {
+                        final vendor = vendors[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    const VendorPaymentHistoryDetails(),
                               ),
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
                             ),
-                            child: Row(
+                            child: Column(
                               children: [
-                                Stack(
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue.shade100,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(16),
+                                      topRight: Radius.circular(16),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                left: 15,
+                                                right: 15,
+                                                top: 8,
+                                                bottom: 8),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue.shade700,
+                                              borderRadius:
+                                                  BorderRadius.circular(13),
+                                            ),
+                                            child: Text(
+                                              vendor.vendorName.isNotEmpty
+                                                  ? vendor.vendorName[0]
+                                                      .toUpperCase()
+                                                  : 'C',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Text(
+                                                    vendor.vendorName,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.phone,
+                                                  color: Colors.blue,
+                                                  size: 15,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Text(
+                                                  vendor.mobileNumber.isNotEmpty
+                                                      ? vendor.mobileNumber
+                                                      : 'No phone',
+                                                  style: const TextStyle(
+                                                    color: Colors.blue,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    decorationColor:
+                                                        Colors.blue,
+                                                    fontSize: 15,
+                                                    height: 1.5,
+                                                    decorationThickness: 1.5,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.grey,
+                                        size: 20,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
-                                    Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 15,
-                                          right: 15,
-                                          top: 8,
-                                          bottom: 8),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius:
-                                        BorderRadius.circular(10),
-                                      ),
-                                      child: Text(
-                                        vendor.vendorName.isNotEmpty
-                                            ? vendor.vendorName[0]
-                                            .toUpperCase()
-                                            : 'C',
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                    Column(
+                                      children: [
+                                        const Text(
+                                          'Total Amount',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.currency_rupee,
+                                              size: 18,
+                                            ),
+                                            Text(
+                                              vendor.totalAmount,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 4),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green.shade100,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: const Text(
+                                            'Given',
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.currency_rupee,
+                                              size: 18,
+                                              color: Colors.green,
+                                            ),
+                                            Text(
+                                              vendor.receivedAmount,
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.green),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.red.shade100,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: const Text(
+                                            'OutStanding',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.currency_rupee,
+                                              size: 18,
+                                              color: Colors.red,
+                                            ),
+                                            Text(
+                                              vendor.pendingAmount,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
                                     )
                                   ],
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              vendor.vendorName,
-                                              style: const TextStyle(
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                  fontSize: 18),
-                                              overflow:
-                                              TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.phone,
-                                            color: Colors.blue,
-                                            size: 15,
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Text(
-                                            vendor.mobileNumber.isNotEmpty
-                                                ? vendor.mobileNumber
-                                                : 'No phone',
-                                            style: const TextStyle(
-                                              color: Colors.blue,
-                                              decoration:
-                                              TextDecoration.underline,
-                                              decorationColor: Colors.blue,
-                                              fontSize: 15,
-                                              height: 1.5,
-                                              decorationThickness: 1.5,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Spacer(),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.grey,
-                                  size: 20,
-                                )
+                                const SizedBox(height: 8),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  const Text(
-                                    'Total Amount',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.currency_rupee,
-                                        size: 18,
-                                      ),
-                                      Text(
-                                        vendor.totalAmount,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.green.shade100,
-                                      borderRadius:
-                                      BorderRadius.circular(8),
-                                    ),
-                                    child: const Text(
-                                      'Given',
-                                      style: TextStyle(color: Colors.green),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.currency_rupee,
-                                        size: 18,
-                                        color: Colors.green,
-                                      ),
-                                      Text(
-                                        vendor.receivedAmount,
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.green),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.red.shade100,
-                                      borderRadius:
-                                      BorderRadius.circular(8),
-                                    ),
-                                    child: const Text(
-                                      'OutStanding',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.currency_rupee,
-                                        size: 18,
-                                        color: Colors.red,
-                                      ),
-                                      Text(
-                                        vendor.pendingAmount,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                        ],
-                      ),
-                    ),
-                  )),
+                        );
+                      }),
                   const SizedBox(height: 32),
                 ],
               ),
@@ -598,71 +611,73 @@ class _VendorPaymentHistoryScreenState
   }
 
   Widget _dateBox(DateTime date, VoidCallback onTap) => InkWell(
-    onTap: onTap,
-    child: Container(
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey),
-        boxShadow: const [
-          BoxShadow(
-              color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
-        ],
-      ),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.calendar_today_rounded,
-              size: 20,
-              color: Colors.blue,
+        onTap: onTap,
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
+            ],
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.calendar_today_rounded,
+                  size: 20,
+                  color: Colors.blue,
+                ),
+                const SizedBox(width: 15),
+                Text(
+                  "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}",
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ],
             ),
-            const SizedBox(width: 15),
-            Text(
-              "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}",
-              style: const TextStyle(fontWeight: FontWeight.w500),
-            ),
-          ],
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget _arrowCircle() => Container(
-    padding: const EdgeInsets.all(6),
-    decoration: BoxDecoration(
-      color: Colors.blue.withOpacity(0.2),
-      borderRadius: BorderRadius.circular(8),
-      boxShadow: const [
-        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
-      ],
-    ),
-    child: const Icon(Icons.compare_arrows, color: Colors.blue),
-  );
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: Colors.blue.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
+          ],
+        ),
+        child: const Icon(Icons.compare_arrows, color: Colors.blue),
+      );
 
   Widget _confirmCircle() => Container(
-    margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: Colors.blue,
-      borderRadius: BorderRadius.circular(12),
-      boxShadow: const [
-        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 1)),
-      ],
-    ),
-    child: const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.filter_alt_outlined, color: Colors.white),
-        SizedBox(width: 6),
-        Text(
-          'Apply Filter',
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        )
-      ],
-    ),
-  );
+        margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.black12, blurRadius: 4, offset: Offset(0, 1)),
+          ],
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.filter_alt_outlined, color: Colors.white),
+            SizedBox(width: 6),
+            Text(
+              'Apply Filter',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            )
+          ],
+        ),
+      );
 }
