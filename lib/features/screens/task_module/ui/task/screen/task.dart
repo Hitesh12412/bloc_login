@@ -215,10 +215,7 @@ class _TaskListScreenWidgetState extends State<TaskListScreenWidget> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const CreateTaskScreen(
-                    employeeId: '87',
-                    userId: '1',
-                  ),
+                  builder: (context) => const CreateTaskScreen(),
                 ),
               );
             },

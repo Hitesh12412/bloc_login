@@ -41,11 +41,11 @@ class _AddVendorPaymentScreenState
     'Cash',
     'Cheque',
     'Credit/Debit Card',
-    'Internet banking',
+    'Internet Banking',
     'Google Pay',
     'PhonePe',
     'Paytm',
-    'Razorpay',
+    'RazorPay',
     'Other',
   ];
 
@@ -97,9 +97,36 @@ class _AddVendorPaymentScreenState
   }
 
   void _toast(String msg) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg)));
+    Color bgColor;
+    if (msg.toLowerCase().contains('success') ||
+        msg.toLowerCase().contains('added') ||
+        msg.toLowerCase().contains('saved')) {
+      bgColor = Colors.green.shade600;
+    } else if (msg.toLowerCase().contains('select') ||
+        msg.toLowerCase().contains('enter')) {
+      bgColor = Colors.orange.shade700;
+    } else {
+      bgColor = Colors.red.shade600;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: bgColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        content: Text(
+          msg,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +248,6 @@ class _AddVendorPaymentScreenState
     );
   }
 
-
   Widget _dateTile() {
     return GestureDetector(
       onTap: () async {
@@ -286,7 +312,6 @@ class _AddVendorPaymentScreenState
     );
   }
 
-
   Widget _outstandingTile() {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -322,7 +347,6 @@ class _AddVendorPaymentScreenState
       ),
     );
   }
-
 
   Widget _addAmountField() {
     return Container(
@@ -370,7 +394,6 @@ class _AddVendorPaymentScreenState
       ),
     );
   }
-
 
   Widget _paymentMethodTile() {
     return GestureDetector(
@@ -439,8 +462,6 @@ class _AddVendorPaymentScreenState
     );
   }
 
-
-
   Widget _remarkField() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -489,7 +510,6 @@ class _AddVendorPaymentScreenState
       ),
     );
   }
-
 
   Widget _submitButton() {
     return BlocConsumer<AddPaymentBloc, AddPaymentState>(

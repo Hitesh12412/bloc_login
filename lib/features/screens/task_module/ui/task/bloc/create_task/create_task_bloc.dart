@@ -9,8 +9,9 @@ class TaskCreateBloc extends Bloc<TaskCreateEvent, TaskCreateState> {
   TaskCreateBloc() : super(TaskCreateInitial()) {
     on<TaskCreateRequested>((event, emit) async {
       emit(TaskCreateLoading());
+
       try {
-        final data = {
+        final Map<String, String> data = {
           'user_id': '1',
           'db_connection': 'erp_tata_steel_demo',
           'name': event.taskName,
@@ -20,23 +21,36 @@ class TaskCreateBloc extends Bloc<TaskCreateEvent, TaskCreateState> {
           'start_date': event.startDate,
           'end_date': event.endDate,
         };
+
         if (kDebugMode) {
-          print('CreateTask POST: $data');
+          print('🚀 CreateTask POST BODY 👉 $data');
         }
 
-        final Uri url = Uri.parse("https://shiserp.com/demo/api/createTask");
-        final response = await http.post(url, body: data);
+        final response = await http.post(
+          Uri.parse("https://shiserp.com/demo/api/createTask"),
+          body: data,
+        );
+
         final decode = json.decode(response.body);
 
+        if (kDebugMode) {
+          print('✅ CreateTask RESPONSE 👉 $decode');
+        }
+
         if (response.statusCode == 200 && decode['status'] == 200) {
-          emit(TaskCreateSuccess(decode['message'] ?? "Task created successfully"));
+          emit(TaskCreateSuccess(
+            decode['message'] ?? "Task created successfully",
+          ));
         } else {
-          emit(TaskCreateFailure(decode['message'] ?? "Failed to create task"));
+          emit(TaskCreateFailure(
+            decode['message'] ?? "Failed to create task",
+          ));
         }
       } catch (e) {
-        emit(TaskCreateFailure("An error occurred: $e"));
+        emit(TaskCreateFailure("Something went wrong: $e"));
       }
     });
   }
 }
+
 

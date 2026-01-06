@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bloc_login/features/screens/product_module/bloc/add_product/add_product_bloc.dart';
 import 'package:bloc_login/features/screens/product_module/bloc/add_product/add_product_event.dart';
 import 'package:bloc_login/features/screens/product_module/bloc/add_product/add_product_state.dart';
@@ -261,7 +260,6 @@ class _AddProductState extends State<AddProduct> {
                   );
                 },
               ),
-
               BlocBuilder<UnitProductBloc, UnitProductState>(
                 builder: (context, state) {
                   if (state is! UnitProductLoaded) {
@@ -282,19 +280,19 @@ class _AddProductState extends State<AddProduct> {
                 },
               ),
               GestureDetector(
-                  onTap: () async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const AddProductScreen(),
-                      ),
-                    );
+                onTap: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const AddProductScreen(),
+                    ),
+                  );
 
-                    if (result != null && result is Map<String, dynamic>) {
-                      setState(() {
-                        selectedProducts.add(result);
-                      });
-                    }
+                  if (result != null && result is Map<String, dynamic>) {
+                    setState(() {
+                      selectedProducts.add(result);
+                    });
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(15),
@@ -313,14 +311,22 @@ class _AddProductState extends State<AddProduct> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors.blue.shade100,
                             shape: BoxShape.circle,
-                  ),
-                          child: Icon(Icons.add_box_outlined,color: Colors.blue.shade700,)),
-                      const SizedBox(width: 10,),
-                      Text("Add New Product",style: TextStyle(color: Colors.blue.shade700),)
+                          ),
+                          child: Icon(
+                            Icons.add_box_outlined,
+                            color: Colors.blue.shade700,
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Add New Product",
+                        style: TextStyle(color: Colors.blue.shade700),
+                      )
                     ],
                   ),
                 ),
@@ -331,8 +337,8 @@ class _AddProductState extends State<AddProduct> {
                 _section('Products'),
                 ...selectedProducts.map(_productTile),
               ],
-
               const SizedBox(height: 20),
+
               BlocConsumer<ProductCreateBloc, ProductCreateState>(
                 listener: (context, state) {
                   if (state is ProductCreateSuccess) {
@@ -371,52 +377,57 @@ class _AddProductState extends State<AddProduct> {
                       onPressed: state is ProductCreateLoading
                           ? null
                           : () {
-                        final productDataJson = jsonEncode(
-                          selectedProducts.map((p) {
-                            return {
-                              "product_id": p['product_id'],
-                              "qty": p['qty'],
-                              "category_id": p['category_id'],
-                              "sub_category_id": p['sub_category_id'],
-                              "brand_id": p['brand_id'],
-                            };
-                          }).toList(),
-                        );
+                              final productDataJson = jsonEncode(
+                                selectedProducts.map((p) {
+                                  return {
+                                    "product_id": p['product_id'],
+                                    "qty": p['qty'],
+                                    "category_id": p['category_id'],
+                                    "sub_category_id": p['sub_category_id'],
+                                    "brand_id": p['brand_id'],
+                                  };
+                                }).toList(),
+                              );
 
-                        context.read<ProductCreateBloc>().add(
-                          ProductCreateRequested(
-                            userId: '1',
-                            categoryId: selectedCategory?.id.toString() ?? '',
-                            subCategoryId:
-                            selectedSubCategory?.id.toString() ?? '',
-                            unitId: '1',
-                            productTypeId: '1',
-                            brandId: selectedBrand?.id.toString() ?? '',
-                            name: productNameCtrl.text,
-                            productPrice: priceCtrl.text,
-                            qty: qtyCtrl.text,
-                            tax1: 'CGST',
-                            tax1Rate: cgstRate ?? '0',
-                            tax2: 'SGST',
-                            tax2Rate: sgstRate ?? '0',
-                            tax3: 'IGST',
-                            tax3Rate: igstRate ?? '0',
-                            productData: productDataJson,
-                          ),
-                        );
-                      },
+                              context.read<ProductCreateBloc>().add(
+                                    ProductCreateRequested(
+                                      userId: '1',
+                                      categoryId:
+                                          selectedCategory?.id.toString() ?? '',
+                                      subCategoryId:
+                                          selectedSubCategory?.id.toString() ??
+                                              '',
+                                      unitId: '1',
+                                      productTypeId: '1',
+                                      brandId:
+                                          selectedBrand?.id.toString() ?? '',
+                                      name: productNameCtrl.text,
+                                      productPrice: priceCtrl.text,
+                                      qty: qtyCtrl.text,
+                                      tax1: 'CGST',
+                                      tax1Rate: cgstRate ?? '0',
+                                      tax2: 'SGST',
+                                      tax2Rate: sgstRate ?? '0',
+                                      tax3: 'IGST',
+                                      tax3Rate: igstRate ?? '0',
+                                      productData: productDataJson,
+                                    ),
+                                  );
+                            },
                       icon: state is ProductCreateLoading
                           ? const SizedBox(
-                        height: 18,
-                        width: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
+                              height: 18,
+                              width: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
                           : const Icon(Icons.save),
                       label: Text(
-                        state is ProductCreateLoading ? "Saving..." : "Save Product",
+                        state is ProductCreateLoading
+                            ? "Saving..."
+                            : "Save Product",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -426,7 +437,6 @@ class _AddProductState extends State<AddProduct> {
                   );
                 },
               ),
-
             ],
           ),
         ),
@@ -717,9 +727,7 @@ class _AddProductState extends State<AddProduct> {
                 hint,
                 style: TextStyle(
                   fontSize: 16,
-                  color: hint.startsWith("Select")
-                      ? Colors.grey
-                      : Colors.black,
+                  color: hint.startsWith("Select") ? Colors.grey : Colors.black,
                 ),
               ),
             ],
@@ -727,10 +735,10 @@ class _AddProductState extends State<AddProduct> {
           items: items
               .map(
                 (e) => DropdownMenuItem<UnitProductModel>(
-              value: e,
-              child: Text(e.name),
-            ),
-          )
+                  value: e,
+                  child: Text(e.name),
+                ),
+              )
               .toList(),
           onChanged: onChanged,
           icon: const Icon(
@@ -742,7 +750,6 @@ class _AddProductState extends State<AddProduct> {
       ),
     );
   }
-
 
   Widget _buildInputField(
       String label, String hint, TextEditingController ctrl) {
@@ -798,7 +805,6 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-
   Widget _buildSelectField(String label, String hint) {
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
@@ -831,12 +837,12 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
               const SizedBox(height: 6),
-              Text(hint,
-                  style: TextStyle(
-                      fontSize: 16,
-                      color:
-                      hint.startsWith("Tap") ? Colors.grey : Colors.black),),
-
+              Text(
+                hint,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: hint.startsWith("Tap") ? Colors.grey : Colors.black),
+              ),
             ],
           ),
           const Spacer(),
@@ -868,13 +874,14 @@ class _AddProductState extends State<AddProduct> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 12,
-                offset: const Offset(0, 6),
-              ),
-            ],),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
             child: Column(
               children: [
                 Row(
@@ -895,17 +902,21 @@ class _AddProductState extends State<AddProduct> {
                         Text(
                           _v(p, 'product_name'),
                           style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold,color: Colors.green),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green),
                         ),
                         Container(
-                          padding: const EdgeInsets.only(left: 8,right: 8,top: 3,bottom: 3),
+                          padding: const EdgeInsets.only(
+                              left: 8, right: 8, top: 3, bottom: 3),
                           decoration: BoxDecoration(
                             color: Colors.blue.shade50,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             'Qty: ${_v(p, 'qty')}',
-                            style: TextStyle(color: Colors.blue.shade700,fontSize: 12),
+                            style: TextStyle(
+                                color: Colors.blue.shade700, fontSize: 12),
                           ),
                         ),
                       ],
@@ -913,11 +924,16 @@ class _AddProductState extends State<AddProduct> {
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(Icons.more_vert,color: Colors.blue.shade700,size: 20,),)
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        Icons.more_vert,
+                        color: Colors.blue.shade700,
+                        size: 20,
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -925,15 +941,18 @@ class _AddProductState extends State<AddProduct> {
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300)
-                  ),
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300)),
                   child: Column(
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.category_outlined,color: Colors.grey,size: 20,),
+                          const Icon(
+                            Icons.category_outlined,
+                            color: Colors.grey,
+                            size: 20,
+                          ),
                           const SizedBox(width: 8),
                           Text("Category :  ${_v(p, 'category_name')}")
                         ],
@@ -941,7 +960,11 @@ class _AddProductState extends State<AddProduct> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          const Icon(Icons.subdirectory_arrow_right,color: Colors.grey,size: 20,),
+                          const Icon(
+                            Icons.subdirectory_arrow_right,
+                            color: Colors.grey,
+                            size: 20,
+                          ),
                           const SizedBox(width: 8),
                           Text("Sub-Category :  ${_v(p, 'sub_category_name')}")
                         ],
@@ -949,7 +972,11 @@ class _AddProductState extends State<AddProduct> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          const Icon(Icons.branding_watermark_outlined,color: Colors.grey,size: 20,),
+                          const Icon(
+                            Icons.branding_watermark_outlined,
+                            color: Colors.grey,
+                            size: 20,
+                          ),
                           const SizedBox(width: 8),
                           Text("Brand :  ${_v(p, 'brand_name')}")
                         ],
@@ -980,6 +1007,4 @@ class _AddProductState extends State<AddProduct> {
       ),
     );
   }
-
-
 }
