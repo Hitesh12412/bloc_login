@@ -7,7 +7,7 @@ import 'add_product_event.dart';
 import 'add_product_state.dart';
 
 class ProductCreateBloc extends Bloc<ProductCreateEvent, ProductCreateState> {
-  ProductCreateBloc() : super(ProductCreateInitial()) {
+  ProductCreateBloc() : super(const ProductCreateInitial()) {
     on<ProductCreateRequested>(_onCreateProduct);
   }
 
@@ -15,7 +15,7 @@ class ProductCreateBloc extends Bloc<ProductCreateEvent, ProductCreateState> {
       ProductCreateRequested event,
       Emitter<ProductCreateState> emit,
       ) async {
-    emit(ProductCreateLoading());
+    emit(const ProductCreateLoading());
 
     try {
       final response = await http
